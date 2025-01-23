@@ -18,7 +18,7 @@ def stream_antropic_response(query: str, session_id: str):
     for chat in reversed(chat_history):
         chat_history_str += f"{chat['sender']}: {chat['message']}\n"
 
-    print(f"Chat history: {chat_history_str}")
+    # print(f"Chat history: {chat_history_str}")
 
     full_response = ""
     with client.messages.stream(
@@ -36,7 +36,7 @@ def stream_antropic_response(query: str, session_id: str):
             full_response += chunk # Print to terminal without newlines
             yield { 'message' : chunk }
     
-        yield { 'message': full_response }
+        yield { 'message': full_response, 'end': True }
 
     logger.info(f"Anthropic response: {full_response}")
     
