@@ -48,7 +48,8 @@ The server streams responses in real-time with these message types:
 2. Full response (sent at end):
 ```json
 {
-  "message": "Complete response text"
+  "message": "Complete response text",
+  "end": true
 }
 ```
 
@@ -107,6 +108,7 @@ The API includes content filtering for:
 If content is flagged, the response will be:
 ```json
 {
-  "message": "¿Qué carajo?"
+  "message": "¿Qué carajo?",
+  "end": true
 }
 ```
