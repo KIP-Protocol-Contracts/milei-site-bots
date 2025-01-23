@@ -33,8 +33,9 @@ def stream_antropic_response(query: str, session_id: str):
         model="claude-3-5-sonnet-latest",
     ) as stream_response:
         for chunk in stream_response.text_stream:
-            full_response += chunk # Print to terminal without newlines
-            yield { 'message' : chunk }
+            clean_chunk = chunk.replace('*', '')
+            full_response += clean_chunk
+            yield { 'message' : clean_chunk }
     
         yield { 'message': full_response, 'end': True }
 
