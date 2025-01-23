@@ -1,6 +1,6 @@
 import sys
 
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from loguru import logger
 from loguru._defaults import LOGURU_FORMAT
 
@@ -52,3 +52,6 @@ async def websocket_endpoint(websocket: WebSocket):
         except Exception as e:
             logger.error(f"WebSocket error: {str(e)}")
             await websocket.send_json({"error": str(e)})
+        except WebSocketDisconnect:
+            logger.error("WebSocket disconnected")
+            break
