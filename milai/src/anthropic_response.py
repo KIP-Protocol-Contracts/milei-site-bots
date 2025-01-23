@@ -23,7 +23,7 @@ def stream_antropic_response(query: str, session_id: str):
     full_response = ""
     with client.messages.stream(
         system=CHAT_PROMPT.format(contexto=context, chat_history=chat_history_str),
-        max_tokens=300,
+        max_tokens=800,
         messages=[
             {
                 "role": "user",
