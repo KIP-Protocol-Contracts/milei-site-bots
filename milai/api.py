@@ -33,7 +33,7 @@ async def websocket_endpoint(websocket: WebSocket):
             
             if cp_result == 'inappropriate' or nsfw_result == 'nsfw':
                 logger.warning(f"Declining response due to content filter: {cp_result} {nsfw_result}")
-                await websocket.send_json({"message": DECLINE_RESPONSE})
+                await websocket.send_json({"message": DECLINE_RESPONSE, "end": True})
                 continue
                 
             stream = stream_antropic_response(query, session_id)
