@@ -5,6 +5,7 @@ from loguru import logger
 from loguru._defaults import LOGURU_FORMAT
 
 from src.anthropic_response import stream_antropic_response
+from src.db import get_chat_history
 from utils.guardrail import cp_filter, nsfw_filter, DECLINE_RESPONSE
 
 import json
@@ -16,6 +17,27 @@ logger.add(
 )  # type: ignore
 
 app = FastAPI()
+
+@app.get("/chat/history/{session_id}")
+async def get_chat_history_endpoint(session_id: str):
+    """
+    Get chat history for a session
+    Parameters:
+    - session_id: The session ID to retrieve history for
+
+    """
+    try:
+        history = get_chat_history(session_id, limit=0)
+        return {
+            "status": "success",
+            "data": history
+        }
+    except Exception as e:
+        logger.error(f"Error getting chat history: {e}")
+        return {
+            "status": "error",
+            "message": str(e)
+        }
 
 @app.websocket("/chat")
 async def websocket_endpoint(websocket: WebSocket):
