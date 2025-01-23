@@ -39,19 +39,18 @@ async def websocket_endpoint(websocket: WebSocket):
             stream = stream_antropic_response(query, session_id)
             for chunk in stream:
                 if isinstance(chunk, dict) and 'error' in chunk:
-                    await websocket.send_json({"error": chunk['error']})
-                    break
+                    raise Exception(chunk['error'])
                 await websocket.send_json(chunk)
             
         except json.JSONDecodeError:
             logger.error("WebSocket error: Invalid JSON received")
-            await websocket.send_json({"error": "Invalid JSON format"})
+            break
         except ConnectionError as e:
             logger.error(f"WebSocket connection error: {e}")
-            await websocket.send_json({"error": "Connection error"})
+            break
+        except WebSocketDisconnect:
+            logger.info("WebSocket disconnected")
+            break
         except Exception as e:
             logger.error(f"WebSocket error: {str(e)}")
-            await websocket.send_json({"error": str(e)})
-        except WebSocketDisconnect:
-            logger.error("WebSocket disconnected")
             break
