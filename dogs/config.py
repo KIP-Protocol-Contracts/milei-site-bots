@@ -82,20 +82,13 @@ def get_secrets_from_vault():
 get_secrets_from_vault()
 
 # Load secrets from environment variables
-# TODO: Add API_KEY, API_SECRET, BEARER_TOKEN, ACCESS_TOKEN, ACCESS_TOKEN_SECRET of the new bot to vault and change vault name accordingly
-# API_KEY = os.getenv("API_KEY") or ""
-# API_SECRET = os.getenv("API_KEY_SECRET") or ""
-# BEARER_TOKEN = os.getenv("BEARER_TOKEN") or ""
-# ACCESS_TOKEN = os.getenv("ACCESS_TOKEN") or ""
-# ACCESS_TOKEN_SECRET = os.getenv("ACCESS_TOKEN_SECRET") or ""
-# JOB_INTERVAL = int(os.getenv("JOB_INTERVAL")) or 12
-# MAX_REPLY_TWEETS = int(os.getenv("MAX_REPLY_TWEETS")) or 4
-# MYSQL_HOST = os.getenv("DB_HOST") or ""
-# MYSQL_USER = os.getenv("DB_USER") or ""
-# MYSQL_PASSWORD = os.getenv("DB_PASSWORD") or ""
-# MYSQL_DATABASE = os.getenv("DB_DATABASE") or ""
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-# Load environment variables
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
-if not ANTHROPIC_API_KEY:
-    raise ValueError("ANTHROPIC_API_KEY must be set in environment variables")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_DATABASE"),
+    "ssl_ca": "ca.pem"
+}
