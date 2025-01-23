@@ -33,7 +33,15 @@ def stream_antropic_response(query: str, session_id: str):
         model="claude-3-5-sonnet-latest",
     ) as stream_response:
         for chunk in stream_response.text_stream:
-            clean_chunk = chunk.replace('*', '')
+            # Remove markdown formatting (text between asterisks)
+            clean_chunk = ''
+            in_asterisk = False
+            for char in chunk:
+                if char == '*':
+                    in_asterisk = not in_asterisk
+                    continue
+                if not in_asterisk:
+                    clean_chunk += char
             full_response += clean_chunk
             yield { 'message' : clean_chunk }
     
