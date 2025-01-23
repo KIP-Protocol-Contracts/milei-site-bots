@@ -4,7 +4,8 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from loguru import logger
 from loguru._defaults import LOGURU_FORMAT
 
-from src.anthropic_response import stream_antropic_response
+# from src.anthropic_response import stream_antropic_response
+from src.deepseek_response import stream_deepseek_response
 from src.db import get_chat_history
 from utils.guardrail import cp_filter, nsfw_filter, DECLINE_RESPONSE
 
@@ -58,7 +59,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 await websocket.send_json({"message": DECLINE_RESPONSE, "end": True})
                 continue
                 
-            stream = stream_antropic_response(query, session_id)
+            # stream = stream_antropic_response(query, session_id)
+            stream = stream_deepseek_response(query, session_id)
             for chunk in stream:
                 if isinstance(chunk, dict) and 'error' in chunk:
                     raise Exception(chunk['error'])
