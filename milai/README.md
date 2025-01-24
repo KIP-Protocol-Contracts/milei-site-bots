@@ -63,7 +63,7 @@ The server streams responses in real-time with these message types:
 ### REST Endpoints
 
 #### GET /chat/history/{session_id}
-Retrieve chat history for a specific session in reversed order.
+Retrieve chat history for a specific session.
 
 Parameters:
 - `session_id`: The session ID to retrieve history for (required)
@@ -79,14 +79,14 @@ Example Response:
   "status": "success",
   "data": [
     {
-      "message": "Hi there!",
-      "sender": "bot", 
-      "created_at": "2025-01-23T12:34:56"
-    },
-    {
       "message": "Hello!",
       "sender": "user",
       "created_at": "2025-01-23T12:34:50"
+    },
+    {
+      "message": "Hi there!",
+      "sender": "bot", 
+      "created_at": "2025-01-23T12:34:56"
     }
   ]
 }
