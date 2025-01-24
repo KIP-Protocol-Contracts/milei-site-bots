@@ -27,6 +27,7 @@ def stream_deepseek_response(query: str, session_id: str, dog_name: str):
     today = datetime.now()
 
     full_response = ""
+<<<<<<< HEAD
     if dog_name == "lucas":
         prompt = CHAT_PROMPT_LUCAS
     elif dog_name == "murray":
@@ -42,6 +43,13 @@ def stream_deepseek_response(query: str, session_id: str, dog_name: str):
             {"role": "system", "content": prompt.format(
                 chat_history=chat_history_str,
             )},
+=======
+    print("query: ", query, "chat_prompt: ", CHAT_PROMPT)
+    stream = client.chat.completions.create(
+        model="deepseek-chat",
+        messages=[
+            {"role": "system", "content": CHAT_PROMPT},
+>>>>>>> 0c2f3e6375465de53b74d96a90e3699dadffde60
             {"role": "user", "content": query}
         ],
         max_tokens=800,
