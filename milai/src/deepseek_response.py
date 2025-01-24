@@ -21,7 +21,7 @@ def stream_deepseek_response(query: str, session_id: str):
     for chat in reversed(chat_history):
         chat_history_str += f"{chat['sender']}: {chat['message']}\n"
 
-    search_results = get_search_results(query)
+    search_results = get_search_results(query, max_results=10)
     
     month_names = [
          "enero", "febrero", "marzo", "abril", "mayo", "junio",
@@ -29,12 +29,6 @@ def stream_deepseek_response(query: str, session_id: str):
      ]
     today = datetime.now()
     current_date = f"{today.day} de {month_names[today.month - 1]} de {today.year}"
-
-    print("Prompt:", CHAT_PROMPT.format(
-        contexto=search_results,
-        chat_history=chat_history_str,
-        current_date=current_date
-    ))
 
     full_response = ""
     stream = client.chat.completions.create(
