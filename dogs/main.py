@@ -6,7 +6,7 @@ import os
 from typing import Optional
 import json
 import logging
-from config import ANTHROPIC_API_KEY
+from dogs.utils.config import ANTHROPIC_API_KEY
 
 app = FastAPI()
 client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)

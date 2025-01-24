@@ -17,7 +17,7 @@ def insert_chat_history(user_id: str, message: str, sender: str, session_id: str
         with get_db_connection() as connection:
             with connection.cursor() as cursor:
                 sql = """
-                    INSERT INTO mlw_milai_chat_history (user_id, message, sender, session_id)
+                    INSERT INTO mlw_dogs_chat_history (user_id, message, sender, session_id)
                     VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (user_id, message, sender, session_id))
@@ -35,7 +35,7 @@ def get_chat_history(session_id: str, limit: int = 10) -> List[Dict]:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 sql = """
                     SELECT message, sender, created_at
-                    FROM mlw_milai_chat_history
+                    FROM mlw_dogs_chat_history
                     WHERE session_id = %s
                     ORDER BY id DESC
                     LIMIT %s
