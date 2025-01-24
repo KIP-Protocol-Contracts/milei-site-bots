@@ -4,7 +4,6 @@ from loguru import logger
 # import src.context_retriever as retriever
 from src.db import insert_chat_history, get_chat_history
 from src.prompt import CHAT_PROMPT
-from src.search import get_search_results
 from utils.config import ANTHROPIC_API_KEY
 
 client = Anthropic(
@@ -19,12 +18,10 @@ def stream_antropic_response(query: str, session_id: str):
     for chat in reversed(chat_history):
         chat_history_str += f"{chat['sender']}: {chat['message']}\n"
 
-    # print(f"Chat history: {chat_history_str}")
-    search_results = get_search_results(query)
 
     full_response = ""
     with client.messages.stream(
-        system=CHAT_PROMPT.format(contexto=search_results, chat_history=chat_history_str),
+        system=CHAT_PROMPT.format(chat_history=chat_history_str),
         max_tokens=800,
         messages=[
             {
