@@ -28,10 +28,12 @@ async def get_chat_history_endpoint(session_id: str):
 
     """
     try:
-        history = get_chat_history(session_id, limit=0)
+        # TODO: Enable chat history again later
+        # history = get_chat_history(session_id, limit=0)
         return {
             "status": "success",
-            "data": history
+            # "data": history
+            "data": []
         }
     except Exception as e:
         logger.error(f"Error getting chat history: {e}")
