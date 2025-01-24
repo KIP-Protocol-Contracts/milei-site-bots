@@ -58,7 +58,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 logger.warning(f"Declining response due to content filter: {cp_result} {nsfw_result}")
                 await websocket.send_json({"message": DECLINE_RESPONSE, "end": True})
                 continue
-                
+            
+            logger.info(f"Streaming response for query: {query}")
             # stream = stream_antropic_response(query, session_id)
             stream = stream_deepseek_response(query, session_id)
             for chunk in stream:
@@ -68,13 +69,10 @@ async def websocket_endpoint(websocket: WebSocket):
             
         except json.JSONDecodeError:
             logger.error("WebSocket error: Invalid JSON received")
-            break
         except ConnectionError as e:
             logger.error(f"WebSocket connection error: {e}")
-            break
         except WebSocketDisconnect:
             logger.info("WebSocket disconnected")
             break
         except Exception as e:
             logger.error(f"WebSocket error: {str(e)}")
-            break

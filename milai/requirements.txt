@@ -1,4 +1,5 @@
 anthropic==0.43.1
+duckduckgo-search==7.2.1
 fastapi==0.115.7
 openai==1.60.0
 loguru==0.7.3
