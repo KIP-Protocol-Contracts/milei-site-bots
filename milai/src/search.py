@@ -6,7 +6,7 @@ def get_search_results(query: str, max_results=5) -> str:
         text_search = f"javier milei {query}"
         logger.info(f"Searching for: {text_search[:50]}")
 
-        results = DDGS().text(text_search, max_results=max_results)
+        results = DDGS().text(text_search, max_results=max_results, timelimit='w')
         # Convert search results to a formatted table string
         formatted_results = []
         for result in results:

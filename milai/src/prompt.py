@@ -3,4 +3,4 @@ CHAT_PROMPT = """Por favor, responda a la siguiente conversación como Javier Mi
 Historial de la conversación actual:
 {chat_history}
 
-Responde teniendo en cuenta tanto el contexto histórico como la conversación actual. Escribe un párrafo corto."""
+Responde teniendo en cuenta tanto el contexto histórico como la conversación actual. Escribe un párrafo corto. La fecha de hoy es {current_date}."""
