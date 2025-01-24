@@ -27,12 +27,11 @@ def stream_deepseek_response(query: str, session_id: str):
     today = datetime.now()
 
     full_response = ""
+    print("query: ", query, "chat_prompt: ", CHAT_PROMPT)
     stream = client.chat.completions.create(
         model="deepseek-chat",
         messages=[
-            {"role": "system", "content": CHAT_PROMPT.format(
-                chat_history=chat_history_str,
-            )},
+            {"role": "system", "content": CHAT_PROMPT},
             {"role": "user", "content": query}
         ],
         max_tokens=800,
