@@ -5,7 +5,6 @@ from loguru import logger
 # import src.context_retriever as retriever
 from src.db import insert_chat_history, get_chat_history
 from src.prompt import CHAT_PROMPT
-from src.search import get_search_results
 from utils.config import DEEPSEEK_API_KEY
 
 client = OpenAI(
@@ -20,24 +19,19 @@ def stream_deepseek_response(query: str, session_id: str):
     chat_history_str = ""
     for chat in reversed(chat_history):
         chat_history_str += f"{chat['sender']}: {chat['message']}\n"
-
-    search_results = get_search_results(query, max_results=10)
     
     month_names = [
          "enero", "febrero", "marzo", "abril", "mayo", "junio",
          "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
      ]
     today = datetime.now()
-    current_date = f"{today.day} de {month_names[today.month - 1]} de {today.year}"
 
     full_response = ""
     stream = client.chat.completions.create(
         model="deepseek-chat",
         messages=[
             {"role": "system", "content": CHAT_PROMPT.format(
-                contexto=search_results,
                 chat_history=chat_history_str,
-                current_date=current_date
             )},
             {"role": "user", "content": query}
         ],
