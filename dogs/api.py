@@ -49,6 +49,7 @@ async def websocket_endpoint(websocket: WebSocket):
             logger.info(f"Received data: {data}")
             query = data.get('query')
             session_id = data.get('session_id')
+            dog_name = data.get('name')
             
             # Check content filters
             cp_result = cp_filter(query)
@@ -61,7 +62,7 @@ async def websocket_endpoint(websocket: WebSocket):
             
             logger.info(f"Streaming response for query: {query}")
             # stream = stream_antropic_response(query, session_id)
-            stream = stream_deepseek_response(query, session_id)
+            stream = stream_deepseek_response(query, session_id, dog_name)
             for chunk in stream:
                 if isinstance(chunk, dict) and 'error' in chunk:
                     raise Exception(chunk['error'])

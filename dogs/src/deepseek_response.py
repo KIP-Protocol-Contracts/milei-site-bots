@@ -4,7 +4,7 @@ from loguru import logger
 
 # import src.context_retriever as retriever
 from src.db import insert_chat_history, get_chat_history
-from src.prompt import CHAT_PROMPT
+from src.prompt import CHAT_PROMPT_LUCAS, CHAT_PROMPT_MURRAY, CHAT_PROMPT_MILTON
 from utils.config import DEEPSEEK_API_KEY
 
 client = OpenAI(
@@ -12,7 +12,7 @@ client = OpenAI(
     api_key=DEEPSEEK_API_KEY,
 )
 
-def stream_deepseek_response(query: str, session_id: str):
+def stream_deepseek_response(query: str, session_id: str, dog_name: str):
     # context = retriever.ret(query, 4)
 
     chat_history = get_chat_history(session_id)
@@ -27,10 +27,19 @@ def stream_deepseek_response(query: str, session_id: str):
     today = datetime.now()
 
     full_response = ""
+    if dog_name == "lucas":
+        prompt = CHAT_PROMPT_LUCAS
+    elif dog_name == "murray":
+        prompt = CHAT_PROMPT_MURRAY
+    elif dog_name == "milton":
+        prompt = CHAT_PROMPT_MILTON
+    else:
+        raise ValueError(f"Dog name not valid: {dog_name}")
+
     stream = client.chat.completions.create(
         model="deepseek-chat",
         messages=[
-            {"role": "system", "content": CHAT_PROMPT.format(
+            {"role": "system", "content": prompt.format(
                 chat_history=chat_history_str,
             )},
             {"role": "user", "content": query}

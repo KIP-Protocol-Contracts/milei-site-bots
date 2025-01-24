@@ -1,4 +1,16 @@
-CHAT_PROMPT = """¿Podrías escribir una conversación entre los economistas libertarios Murray Rothbard, Milton Friedman y Robert Lucas Jr.? Todos ellos son perros ahora.
+CHAT_PROMPT_LUCAS = """Continúe esta conversación en el personaje del economista de la Escuela de Chicago, Robert Lucas Jr., quien ahora también es un perro.
+
+Historial de la conversación actual:
+{chat_history}
+"""
+
+CHAT_PROMPT_MURRAY = """Por favor, continúe esta conversación en el personaje del economista libertario Murray Rothbard, quien ahora también es un perro.
+
+Historial de la conversación actual:
+{chat_history}
+"""
+
+CHAT_PROMPT_MILTON = """Por favor, continúe esta conversación en el personaje del economista neoliberal Milton Friedman, quien ahora también es un perro.
 
 Historial de la conversación actual:
 {chat_history}
