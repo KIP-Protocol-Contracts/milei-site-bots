@@ -37,13 +37,21 @@ def get_chat_history(session_id: str, limit: int = 10) -> List[Dict]:
                     SELECT message, sender, created_at
                     FROM mlw_milai_chat_history
                     WHERE session_id = %s
-                    ORDER BY id DESC
-                    LIMIT %s
                 """
-                cursor.execute(sql, (session_id, limit))
+
+                # If limit is 0, return all messages
+                if limit == 0:
+                    sql += " ORDER BY id ASC"
+                else:
+                    sql += " ORDER BY id DESC"
+                    sql += " LIMIT %s"
+
+                parameters = (session_id, limit) if limit != 0 else (session_id,)
+
+                cursor.execute(sql, parameters)
                 result = cursor.fetchall()
 
                 return result
     except Exception as e:
         logger.error(f"Error getting chat history: {e}")
-        return []
+        raise e

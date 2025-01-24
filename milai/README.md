@@ -48,7 +48,8 @@ The server streams responses in real-time with these message types:
 2. Full response (sent at end):
 ```json
 {
-  "message": "Complete response text"
+  "message": "Complete response text",
+  "end": true
 }
 ```
 
@@ -56,6 +57,46 @@ The server streams responses in real-time with these message types:
 ```json
 {
   "error": "Error message"
+}
+```
+
+### REST Endpoints
+
+#### GET /chat/history/{session_id}
+Retrieve chat history for a specific session.
+
+Parameters:
+- `session_id`: The session ID to retrieve history for (required)
+
+Example Request:
+```bash
+GET /chat/history/abc123
+```
+
+Example Response:
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "message": "Hello!",
+      "sender": "user",
+      "created_at": "2025-01-23T12:34:50"
+    },
+    {
+      "message": "Hi there!",
+      "sender": "bot", 
+      "created_at": "2025-01-23T12:34:56"
+    }
+  ]
+}
+```
+
+Error Response:
+```json
+{
+  "status": "error",
+  "message": "Error description"
 }
 ```
 
@@ -67,6 +108,7 @@ The API includes content filtering for:
 If content is flagged, the response will be:
 ```json
 {
-  "message": "¿Qué carajo?"
+  "message": "¿Qué carajo?",
+  "end": true
 }
 ```
