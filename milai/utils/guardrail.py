@@ -4,6 +4,7 @@ from loguru import logger
 from utils.config import OPENAI_API_KEY, DEEPSEEK_API_KEY
 
 DECLINE_RESPONSE = "¿Qué carajo?"
+DECLINE_RESPONSES = ["痴線！", "搞乜嘢呀"]
 
 def get_chatgpt_response(prompt, user_message, model='gpt-4o-mini', temperature=0, max_tokens=1):
     try:

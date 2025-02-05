@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for milai-bot-site on 2025-01-23T16:37:39+08:00
+# fly.toml app configuration file generated for yat-bot-site on 2025-02-05T10:15:54+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'milai-bot-site'
+app = 'yat-bot-site'
 primary_region = 'sin'
 
 [build]

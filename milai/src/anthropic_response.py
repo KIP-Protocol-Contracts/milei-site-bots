@@ -1,30 +1,49 @@
 from anthropic import Anthropic
+from datetime import datetime
 from loguru import logger
 
-# import src.context_retriever as retriever
+import src.context_retriever as retriever
 from src.db import insert_chat_history, get_chat_history
-from src.prompt import CHAT_PROMPT
-from src.search import get_search_results
+from src.prompt import CHAT_PROMPT_YATSIU, CHAT_PROMPT_BORGET
+# from src.search import get_search_results
 from utils.config import ANTHROPIC_API_KEY
 
 client = Anthropic(
     api_key=ANTHROPIC_API_KEY,  # This is the default and can be omitted
 )
 
-def stream_antropic_response(query: str, session_id: str):
+def stream_antropic_response(query: str, session_id: str, name: str = 'milai'):
     # context = retriever.ret(query, 4)
+    if name == 'milai':
+        context = retriever.ret_yat(query, 4)
+    elif name == 'borget':
+        context = retriever.ret(query, 4)
 
     chat_history = get_chat_history(session_id)
     chat_history_str = ""
     for chat in reversed(chat_history):
         chat_history_str += f"{chat['sender']}: {chat['message']}\n"
 
-    # print(f"Chat history: {chat_history_str}")
-    search_results = get_search_results(query)
+    # search_results = get_search_results(query)
+
+    month_names = [
+         "January", "February", "March", "April", "May", "June",
+         "July", "August", "September", "October", "November", "December"
+     ]
+    today = datetime.now()
+    # current_date = f"{today.day} de {month_names[today.month - 1]} de {today.year}"
+    current_date = f"{month_names[today.month - 1]} {today.day} {today.year}"
+    query = f"Please compose a message in response to the following: {query}"
+
+    system_prompt = ''
+    if name == 'milai':
+        system_prompt = CHAT_PROMPT_YATSIU
+    elif name == 'borget':
+        system_prompt = CHAT_PROMPT_BORGET
 
     full_response = ""
     with client.messages.stream(
-        system=CHAT_PROMPT.format(contexto=search_results, chat_history=chat_history_str),
+        system=system_prompt.format(contexto=context, chat_history=chat_history_str, current_date=current_date),
         max_tokens=800,
         messages=[
             {

@@ -2,9 +2,9 @@ from datetime import datetime
 from openai import OpenAI
 from loguru import logger
 
-# import src.context_retriever as retriever
+import src.context_retriever as retriever
 from src.db import insert_chat_history, get_chat_history
-from src.prompt import CHAT_PROMPT
+from src.prompt import CHAT_PROMPT, CHAT_PROMPT_YATSIU
 from src.search import get_search_results
 from utils.config import DEEPSEEK_API_KEY
 
@@ -15,27 +15,30 @@ client = OpenAI(
 
 def stream_deepseek_response(query: str, session_id: str):
     # context = retriever.ret(query, 4)
+    context = retriever.ret_yat(query, 4)
 
     chat_history = get_chat_history(session_id)
     chat_history_str = ""
     for chat in reversed(chat_history):
         chat_history_str += f"{chat['sender']}: {chat['message']}\n"
 
-    search_results = get_search_results(query, max_results=10)
+    # search_results = get_search_results(query, max_results=5)
     
     month_names = [
-         "enero", "febrero", "marzo", "abril", "mayo", "junio",
-         "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+         "January", "February", "March", "April", "May", "June",
+         "July", "August", "September", "October", "November", "December"
      ]
     today = datetime.now()
-    current_date = f"{today.day} de {month_names[today.month - 1]} de {today.year}"
+    # current_date = f"{today.day} de {month_names[today.month - 1]} de {today.year}"
+    current_date = f"{month_names[today.month - 1]} {today.day} {today.year}"
+    query = f"Please compose a message in response to the following: {query}"
 
     full_response = ""
     stream = client.chat.completions.create(
         model="deepseek-chat",
         messages=[
-            {"role": "system", "content": CHAT_PROMPT.format(
-                contexto=search_results,
+            {"role": "system", "content": CHAT_PROMPT_YATSIU.format(
+                contexto=context,
                 chat_history=chat_history_str,
                 current_date=current_date
             )},

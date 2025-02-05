@@ -2,7 +2,7 @@ name: Fly Deploy
 on:
   push:
     branches:
-      - main    # change to main if needed
+      - yat    # change to main if needed
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,16 +11,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Milai Dogs Bot Service Deployment
-        run: |
-            cd dogs
-            flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.MILAI_DOGS_SERVICE }}
-
-      - name: Milai Bot Service Deployment
+      - name: Yat Bot Service Deployment
         run: |
             cd milai
             flyctl deploy --remote-only
         env:
-          FLY_API_TOKEN: ${{ secrets.MILAI_SERVICE }}
+          FLY_API_TOKEN: ${{ secrets.YAT_SERVICE }}
